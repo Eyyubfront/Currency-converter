@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="./Logo.png" alt="Logo">
+            </div>
+            <div class="navlink">
+                <ul>
+                    <li>БАНК</li>
+                    <li class="childelement">БИЗНЕС</li>
+                    <li class="childelement">ИНВЕСТИЦИИ</li>
+                    <li class="childelement">СТРАХОВАНИЕ</li>
+                    <li class="childelement">МОБАЙЛ</li>
+                    <li class="childelement">ПУТЕШЕСТВИЯ</li>
+                    <li class="childelement">РАЗВЛЕЧЕНИЯ</li>
+                </ul>
+            </div>
+            <div class="logout">
+                <button>ВОЙТИ</button>
+            </div>
+        </div>
+    </header>
+
+  
+        <div class="card__top">
+            <h1>Конвертер валют онлайн</h1>
+        </div>
+
+        <!-- First Card for Currency Conversion -->
+      <div class="cards__container">
+        <div class="cardone">
+            <p>У меня есть</p>
+            <div class="card__btn" id="left-menu">
+                <button class="active">RUB</button>
+                <button class="btnchild">USD</button>
+                <button class="btnchild">EUR</button>
+                <button class="btnchild">GBP</button>
+            </div>
+            <div class="result-card">
+                <input type="text" id="first-input"  class="result-input" />
+                <p id="first-input-footer">1 USD = 73.8896 RUB</p>
+            </div>
+        </div>
+
+        <!-- Second Card for Currency Conversion -->
+        <div class="cardone">
+            <p>У меня есть</p>
+            <div class="card__btn" id="right-menu">
+                <button class="active">RUB</button>
+                <button class="btnchild">USD</button>
+                <button class="btnchild">EUR</button>
+                <button class="btnchild">GBP</button>
+            </div>
+            <div class="result-card">
+                <input type="text" id="second-input"  class="result-input" />
+                <p id="second-input-footer">1 USD = 73.8896 RUB</p>
+            </div>
+        </div>
+      </div>
+   
+
+    <script src="./app.js"></script>
+</body>
+</html>
