@@ -2,23 +2,74 @@ const apiUrl = "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1
 let leftCurrency = "rub";
 let rightCurrency = "usd";
 let leftExchangeRate, rightExchangeRate;
+let activeField = null;
 
-
-
-const leftMenuButtons = document.querySelectorAll("#left-menu button"); 
-const rightMenuButtons = document.querySelectorAll("#right-menu button"); 
-const leftInput = document.querySelector("#first-input"); 
-const rightInput = document.querySelector("#second-input"); 
+const leftMenuButtons = document.querySelectorAll("#left-menu button");
+const rightMenuButtons = document.querySelectorAll("#right-menu button");
+const leftInput = document.querySelector("#first-input");
+const rightInput = document.querySelector("#second-input");
 const leftFooter = document.querySelector("#first-input-footer");
-const rightFooter = document.querySelector("#second-input-footer"); 
+const rightFooter = document.querySelector("#second-input-footer");
+
+const showMessage = (message) => {
+    const existingMessage = document.querySelector(".connection-message");
+    if (!existingMessage) {
+        const messageDiv = document.createElement("div");
+        messageDiv.className = "connection-message";
+        messageDiv.textContent = message;
+        messageDiv.style.position = "fixed";
+        messageDiv.style.top = "10px";
+        messageDiv.style.left = "50%";
+        messageDiv.style.transform = "translateX(-50%)";
+        messageDiv.style.backgroundColor = "#f44336";
+        messageDiv.style.color = "#fff";
+        messageDiv.style.padding = "10px 20px";
+        messageDiv.style.borderRadius = "5px";
+        messageDiv.style.zIndex = "1000";
+        document.body.appendChild(messageDiv);
+    }
+};
+
+const hideMessage = () => {
+    const existingMessage = document.querySelector(".connection-message");
+    if (existingMessage) {
+        existingMessage.remove();
+    }
+};
+
+const checkConnection = () => {
+    if (!navigator.onLine) {
+        showMessage("Internet no");
+        disableControls();
+    } else {
+        hideMessage();
+        enableControls();
+    }
+};
+
+const disableControls = () => {
+    leftMenuButtons.forEach((button) => button.setAttribute("disabled", "true"));
+    rightMenuButtons.forEach((button) => button.setAttribute("disabled", "true"));
+    leftInput.setAttribute("disabled", "true");
+    rightInput.setAttribute("disabled", "true");
+};
+
+const enableControls = () => {
+    leftMenuButtons.forEach((button) => button.removeAttribute("disabled"));
+    rightMenuButtons.forEach((button) => button.removeAttribute("disabled"));
+    leftInput.removeAttribute("disabled");
+    rightInput.removeAttribute("disabled");
+};
 
 async function loadExchangeRates(left, right) {
+    if (!navigator.onLine) return; 
+
     try {
         const [leftData, rightData] = await Promise.all([
             fetch(`${apiUrl}${left}.json`).then((response) => response.json()),
             fetch(`${apiUrl}${right}.json`).then((response) => response.json())
         ]);
-        
+
         leftExchangeRate = leftData[left][right];
         rightExchangeRate = rightData[right][left];
 
@@ -36,7 +87,10 @@ async function loadExchangeRates(left, right) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    checkConnection();
     loadExchangeRates(leftCurrency, rightCurrency);
+    window.addEventListener("online", checkConnection);
+    window.addEventListener("offline", checkConnection);
 });
 
 leftMenuButtons.forEach((button) => {
@@ -56,8 +110,6 @@ rightMenuButtons.forEach((button) => {
         loadExchangeRates(leftCurrency, rightCurrency);
     });
 });
-
-let activeField = null;
 
 leftInput.addEventListener("focus", () => {
     activeField = "left";
